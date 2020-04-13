@@ -1,2 +1,3 @@
 country_mining/__pycache__/
 country_mining/api_config.pkl
+country_mining/api_config.py
