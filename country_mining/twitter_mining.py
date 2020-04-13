@@ -1,18 +1,25 @@
 import twitter
 from operator import itemgetter
+import pickle
+import sys
 
 #%%%%%%%%%%%%%%%%%%%%% MINING THE SOCIAL WEB FUNCTIONS %%%%%%%%%%%%%%%%%%%%%%%%
 
 # ACCESSING TWITTER API
 def oauth_login():
 
-    CONSUMER_KEY = 'xsDU3q1jkdAVUVsXcOAzxv7Yl'
-    CONSUMER_SECRET = '4jRtiU3LPE1dqHS9wtA2t3VfJ5vK4qF5Yq3KXVs2I9NcYbVDX8'
-    OAUTH_TOKEN = '1221184763924484097-Nv92E2q5AltAo1bJ2YHwcmah3D4PHS'
-    OAUTH_TOKEN_SECRET = 'fPxEEXgulZZ18Mi9xBQI4ncchIlnD4JbWnGhfhftMtsEX'
-
-    auth = twitter.oauth.OAuth(OAUTH_TOKEN, OAUTH_TOKEN_SECRET,
-                               CONSUMER_KEY, CONSUMER_SECRET)
+    try:
+        # Fetch API config object from pickle
+        with open('api_config.pkl', 'rb') as api_config_pkl:
+            api_config = pickle.load(api_config_pkl)
+    
+    # Make sure api config file is set up
+    except FileNotFoundError: 
+        print("Error: twitter api config file not set up properly. View project README or ./country_mining/api_config.py for setup instructions")
+        sys.exit()
+        
+    auth = twitter.oauth.OAuth(api_config["OAUTH_TOKEN"], api_config["OAUTH_TOKEN_SECRET"],
+                               api_config["CONSUMER_KEY"], api_config["CONSUMER_SECRET"])
 
     twitter_api = twitter.Twitter(auth=auth)
 
