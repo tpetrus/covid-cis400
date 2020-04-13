@@ -5,7 +5,6 @@ import csv
 
 
 # list of countries to fetch data for
-countries = ["US", "CN", "ES"]
 
 # Fetch country data as JSON object for specified country
 def getCountryData(country_code):
@@ -18,16 +17,15 @@ def getCountryData(country_code):
 
 
 # save data for each country to CSV
-def updateCoronavirusData():
-    for country in countries:
-        with open(f"data/{country}_coronavirus_data.csv", 'w') as fd:
+def updateCoronavirusData(country_code):
+        with open(f"data/{country_code}/{country_code}_coronavirus_data.csv", 'w') as fd:
             writer = csv.writer(fd)
 
             # Write header row
-            writer.writerow(["date", "new_daily_cases", "new_daily_deaths", "total_cases", "total_recoveries", "total_deaths"])
+            writer.writerow(["date", "new_daily_cases", "new_daily_deaths", "total_cases", "total_deaths"])
 
             # fetch data
-            data = getCountryData(country)
+            data = getCountryData(country_code)
 
             # trim data
             trimmed_data = data["timelineitems"][0]
@@ -35,8 +33,9 @@ def updateCoronavirusData():
 
             # iterate through data and save to csv
             for date, data in trimmed_data.items():
+                del data["total_recoveries"] # total recovery data is currently broken in API
                 values = [val for val in data.values()]
                 newRow = [date] + values
                 writer.writerow(newRow)
 
-            print(f"saved {country} data to csv.")
+            print(f"saved {country_code} data to csv.")
