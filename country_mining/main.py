@@ -15,7 +15,7 @@ while True:
         getCoronavirusTweets(country_code)
 
         # Update coronavirus case data csv's
-        updateCoronavirusData(country_code)
+        # updateCoronavirusData(country_code)
     
     # Sleep for 2 hours and then run again
     print("Sleeping for 2 hours at", datetime.datetime.now(), "...")
